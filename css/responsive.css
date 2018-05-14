@@ -1,0 +1,152 @@
+@media screen and (max-width: 1198px) and (min-width: 8px) {
+  a.Partner_Now {
+    margin-right: 0%;
+    margin-bottom: 20px;
+  }
+  a.Existing-in {
+    margin-left: 0%;
+  }
+  img.member_image {
+    max-height: 192px;
+  }
+}
+
+@media screen and (max-width: 990px) and (min-width: 8px) {
+  .wh_com_wrap {
+    margin-left: 0%;
+    width: 100%;
+  }
+  .comment_wrap {
+    max-width: 99%;
+  }
+}
+
+@media screen and (max-width: 773px) and (min-width: 8px) {
+  ul.circle {
+    padding-left: 12px;
+}.col-sm-4.fir_car_det {
+    padding-left: 15px;
+}
+.col-sm-4.secr_car_det {
+    padding-right: 15px;
+}.form-textarea-wrapper.resizable.textarea-processed.resizable-textarea {
+    padding: 0 15px;
+}
+  .job-list ul {
+    padding-left: 0;
+}
+  .contact-us-main .contact-us {
+    display: block;
+        width: 100%;
+  }
+  .contact-us-main .contact-us .contact-head-office .contact-head-office-dtls {
+    display: block;
+  }
+  .contact-us-main .contact-us .contact-head-office .contact-head-office-dtls1 .contact-head-dtls {
+    width: 100%;
+    margin-top: 10px;
+  }
+  p.company_des {
+    width: 100%;
+  }
+  h1.join_team.mt-30:after {
+    display: none;
+  }
+  h1.advisory_class:after {
+    display: none;
+  }
+  img.member_image {
+    max-height: 240px;
+  }
+  .modern_quote {
+    line-height: 30px;
+    text-align: justify;
+    font-size: 18px;
+  }
+  .Ranjan_ceo {
+    width: 100%;
+  }
+  .consideration_quote {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  h1.ceo_pos:after {
+    display: none;
+  }
+  h1.team:after {
+    display: none;
+  }
+  h1.DIRECTORS:after {
+    display: none;
+  }
+  h1.DIRECTORS {
+    font-size: 25px;
+    text-align: center;
+  }
+  h1.advisory_class {
+    text-align: center;
+  }
+  .bl_part {
+    margin-bottom: 15px;
+  }
+  .first {
+    display: none;
+  }
+  .cover-text1 {
+    margin-left: 0%;
+  }
+  .cover-text {
+    margin-left: 0%;
+  }
+  .join_wrapper {
+    width: 100%;
+  }
+  .about_image {
+    text-align: center;
+  }
+  span.b_des {
+    display: inline-block;
+  }
+  .cover-text2 {
+    margin-left: 0%;
+  }
+  .cover-text2.cover_area {
+    width: 100%;
+  }
+  .col-md-5.left_side {
+    max-height: unset;
+  }
+  .right_side_f {
+    max-height: unset;
+  }
+  a.regist_now {
+    margin-bottom: 20px;
+  }
+  a.get_loan {
+    margin-left: unset;
+    margin-top: 20px;
+  }
+  .row_ed {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .row.inner_cal_row {
+    display: block;
+  }
+  .col-md-6.elig_left {
+    padding: 50px 10px 30px 10px;
+    border: 1px solid #e4e4e4;
+    display: block;
+    margin-left: 0%;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .col-md-6.elig_right {
+    padding: 50px 10px 30px 10px;
+    border: 1px solid #e4e4e4;
+    display: block;
+    margin-left: 0%;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

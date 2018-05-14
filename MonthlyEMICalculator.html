@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta charset="utf-8" />
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:500|Play" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link href="css/swiper.css" rel="stylesheet" type="text/css" media="screen" />
+  <link class="main-stylesheet" href="css/pages.css" rel="stylesheet" type="text/css" />
+  <link class="main-stylesheet" href="css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+  <link class="main-stylesheet" href="https://pages.revox.io/frontend/1.1.0/html/01/pages/css/pages-icons.css" rel="stylesheet" type="text/css" />
+  <link href="css/slick.css" rel="stylesheet" type="text/css" />
+  <link href="css/slick-theme.css" rel="stylesheet" type="text/css" />
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/responsive.css" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    var count = 1;
+    var lastClickedId = "";
+    var isChanged = false;
+
+    $(function() {
+      setColorOfAnchor();
+
+
+
+
+
+      $(".m_active").click(function() {
+
+        $(this).addClass('active');
+        $("#a" + count).css('color', "white");
+        isChanged = true;
+
+        if (lastClickedId != "") {
+          $("#" + lastClickedId).removeClass('active');
+        }
+
+        lastClickedId = $(this).attr("id");
+        let temp = lastClickedId.split("a");
+        //count = parseInt(temp[1]);
+
+
+        //resetHeaderLinks();
+      });
+
+      $(".inputRange").keyup(function() {
+        var id = $(this).attr("id");
+        var notNumber = new RegExp("[^0-9]", "g");
+        var val = $(this).val();
+
+        //Math before replacing to prevent losing keyboard selection
+        if (val.match(notNumber)) {
+          $(this).val(val.replace(notNumber, ""));
+          alert("Please enter numeric only");
+          return;
+        }
+
+        var temp = id.split("txt");
+        $("#range" + temp[1]).val(val);
+
+      });
+
+      $(".am_range").change(function() {
+        var id = $(this).attr("id");
+        var temp = id.split("range");
+        var val = $(this).val();
+        //alert(val);
+        $("#txt" + temp[1]).val(val);
+      });
+
+    });
+
+    $(window).scroll(function() {
+      var height = $(window).scrollTop();
+
+      if (height > 10) {
+        resetHeaderLinks();
+      }
+      //alert(height);
+      if (height <= 0) {
+        $("#" + lastClickedId).removeClass('active');
+        lastClickedId = "";
+        for (var i = 1; i < 8; i++) {
+          $("#a" + i).css('color', "white");
+        }
+        setColorOfAnchor();
+      }
+
+    });
+
+
+    function resetHeaderLinks() {
+      $("#a" + count).css('color', "white");
+    }
+
+    function prev() {
+      count = count - 1;
+      if (count == 0) {
+        count = 4;
+      }
+      setColorOfAnchor("prev");
+    }
+
+    function next() {
+      count = count + 1;
+      if (count > 4) {
+        count = 1;
+      }
+      setColorOfAnchor("next");
+    }
+
+    function setColorOfAnchor(identifier = '') {
+      var temp = 0;
+
+      if (identifier == "next") {
+        temp = count - 1;
+      } else {
+        temp = count + 1;
+      }
+      if (isChanged) {
+        for (var i = 1; i < 8; i++) {
+
+          //  $("#a"+i).css('color', "white");
+          $("#a" + i).removeClass("active");
+        }
+        isChanged = false;
+      }
+
+      if (temp == 5 || temp == 0) {
+        temp = 1;
+        if (identifier == "next") {
+          temp = 4;
+        }
+      }
+
+
+      $("#a" + temp).css('color', 'white');
+      $("#a" + count).css('color', '#922159');
+      $("#a" + temp).removeClass("active");
+      $("#a" + count).removeClass("active");
+    }
+$(function(){
+    $(".inputRange3").keyup(function() {
+      var id = $(this).attr("id");
+      var notNumber = new RegExp("[^0-9]", "g");
+      var val = $(this).val();
+
+      //Math before replacing to prevent losing keyboard selection
+      if (val.match(notNumber)) {
+        $(this).val(val.replace(notNumber, ""));
+        alert("Please enter numeric only");
+        return;
+      }
+
+      var temp = id.split("txt");
+      $("#range" + temp[1]).val(val);
+      $("#amountDiv" + temp[1]).html(val);
+
+    });
+
+    $(".am_range").change(function() {
+      var id = $(this).attr("id");
+      var temp = id.split("range");
+      var val = $(this).val();
+      //alert(val);
+      $("#txt" + temp[1]).val(val);
+      $("#amountDiv" + temp[1]).html(val);
+    });
+});
+
+function doCalculate(){
+  var interestRate = parseFloat($("#amountDiv2").html()) / 100;
+  var fixedNumberOfPaymentPerYear = 12
+  var loanTenureInYear = parseInt($("#amountDiv3").html());
+  var loanAmount = parseFloat($("#amountDiv1").html());
+  var date = $("#datepicker").val().split("/");
+  var d = new Date($("#datepicker").val());  //converts the string into date object
+  var m = d.getMonth()+1;
+  var y = d.getFullYear();
+
+  //var monthlyEmi = -PMT(interestRate/fixedNumberOfPaymentPerYear,(loanTenureInYear/12)*fixedNumberOfPaymentPerYear,loanAmount);
+  var monthlyEmi = pmt(interestRate/fixedNumberOfPaymentPerYear,(loanTenureInYear/12)*fixedNumberOfPaymentPerYear,-loanAmount);
+  $("#resultDiv0").html(round(monthlyEmi, 2));
+
+  var payableAmount = round(monthlyEmi * loanTenureInYear,2);
+  $("#resultDiv2").html(round(payableAmount, 2));
+
+  var totalInterest = round(payableAmount - loanAmount,2);
+  $("#resultDiv1").html(round(totalInterest, 2));
+
+  var flatRate = round((totalInterest * 100) / loanAmount ,2);
+  $("#resultDiv3").html(round(flatRate, 2));
+
+  var schedule = computeSchedule(loanAmount,parseFloat($("#amountDiv2").html()),fixedNumberOfPaymentPerYear,loanTenureInYear/12,round(monthlyEmi, 2));
+  var str = "<table class='table table-striped installment_table'>";
+  str += "<tr> <th> S.No. </th> <th>Installment Date</th> <th>EMI</th> <th>Loan Outstanding</th>  <th>Interest</th> <th>Principle Amount</th> </tr>";
+
+  for (var i = 0;i<schedule.length;i++){
+      str += "<tr>";
+      str += "<td>"+round(parseFloat(schedule[i][0]),2);+"</td>";
+      m = m+1;
+      if ( m > 12) {
+        m = 1;
+        y = y +1;
+      }
+
+      var finalMonth = "";
+      var finalDate = date[1];
+
+      // if ( d.getDay() < 10 ) {
+      //   finalDate = "0"+d.getDay();
+      // } else {
+      //   finalDate = d.getDay();
+      // }
+
+      if ( m < 10 ) {
+        finalMonth = "0"+m;
+      } else {
+        finalMonth = m;
+      }
+
+
+      str += "<td>"+finalDate+"/"+finalMonth+"/"+y+"</td>";
+      str += "<td><i class='fa fa-inr' aria-hidden='true'></i>"+round(monthlyEmi,2);+"</td>"
+      str += "<td><i class='fa fa-inr' aria-hidden='true'></i>"+round(parseFloat(schedule[i][3]),2);+"</td>";
+      str += "<td><i class='fa fa-inr' aria-hidden='true'></i>"+round(parseFloat(schedule[i][2]),2);+"</td>";
+      str += "<td><i class='fa fa-inr' aria-hidden='true'></i>"+round(parseFloat(schedule[i][1]),2);+"</td>";
+      str += "</tr>";
+  }
+
+  str += "</table>"
+
+  $("#schduelDiv").html(str);
+
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
+function pmt(rate,nper,pv) {
+    var pvif, pmt;
+
+    pvif = Math.pow( 1 + rate, nper);
+    pmt = rate / (pvif - 1) * -(pv * pvif);
+
+    return pmt;
+};
+
+ function PMT(rate, nperiod, pv, fv, type) {
+    if (!fv) fv = 0;
+    if (!type) type = 0;
+
+    if (rate == 0) return -(pv + fv)/nperiod;
+
+    var pvif = Math.pow(1 + rate, nperiod);
+    var pmt = rate / (pvif - 1) * -(pv * pvif + fv);
+
+    if (type == 1) {
+        pmt /= (1 + rate);
+    };
+
+    return pmt;
+}
+
+function computeSchedule(loan_amount, interest_rate, payments_per_year, years, payment) {
+    var schedule = [];
+    var remaining = loan_amount;
+    var number_of_payments = payments_per_year * years;
+
+    for (var i=0; i<=number_of_payments; i++) {
+        var interest = remaining * (interest_rate/100/payments_per_year);
+        var principle = (payment-interest);
+        var row = [i, principle>0?(principle<payment?principle:payment):0, interest>0?interest:0, remaining>0?remaining:0];
+        schedule.push(row);
+        remaining -= principle
+    }
+
+    return schedule;
+}
+  </script>
+
+  <style media="screen">
+    body{
+      background: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+  <!-- calculator -->
+
+  <div class="claculator_wrapper another_wrap">
+    <div class="container">
+      <div class="row">
+        <nav class="cal_bread_crum">
+          <ul class="bread_list">
+            <li class="bread_active">LENDENCLUB</li>
+            <li class="bread_active">></li>
+            <li>EMI CALCULATOR</li>
+          </ul>
+        </nav>
+        <div class="emi_cover">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="e_text">
+                EMI Calculator
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <a href="#" class="get_loan">Get a loan</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="check_el">
+    <div class="container">
+      <div class="row_ed">
+        <div class="row inner_cal_row">
+          <div class="col-md-6 elig_left">
+            <div class="em_range_wrap">
+              <div class="row des_row">
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount">
+                    Loan Amount is (INR)
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount text-right" id="amountDiv1">
+                    0
+                  </div>
+                </div>
+              </div>
+
+              <input type="range" min="0" id="range1" class="calculator_range am_range" max="400000" step="1" value="0">
+
+                <input class="cal_value_text inputRange3" type="text" id="txt1" pattern="[0-9]*" value="0" placeholder="value here">
+
+            </div>
+            <div class="em_range_wrap">
+              <div class="row des_row">
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount">
+                    Loan Interest
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount text-right" id="amountDiv2">
+                    0
+                  </div>
+                </div>
+              </div>
+
+              <input type="range" min="0" id="range2" class="calculator_range am_range" max="12" step="1" value="0">
+
+                <input class="cal_value_text inputRange3" type="text" id="txt2" pattern="[0-9]*" value="0" placeholder="value here">
+
+            </div>
+            <div class="em_range_wrap">
+              <div class="row des_row">
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount">
+                    Loan Tenure (In Months)
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount text-right" id="amountDiv3">
+                      0
+                  </div>
+                </div>
+              </div>
+
+              <input type="range" min="0" id="range3" class="calculator_range am_range" max="12" step="1" value="0">
+
+                <input class="cal_value_text inputRange3" type="text" id="txt3" pattern="[0-9]*" value="0"  placeholder="value here">
+
+            </div>
+
+            <div class="em_range_wrap">
+              <div class="row des_row">
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount">
+                    Date
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 loan_cover">
+                  <div class="laon_amount text-right" id="amountDiv3">
+                      <input type="text" id="datepicker">
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+
+          </div>
+          <div class="col-md-6 elig_right">
+            <div class="monthly_emi">
+              <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12 Monthly-EMI">
+                  Monthly EMI (INR)
+                </div>
+                <div class="col-md-5 monthly_rate" id="resultDiv0">
+                  0
+                </div>
+              </div>
+            </div>
+            <div class="monthly_emi">
+              <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12 Monthly-EMI">
+                  Total Interest (INR)
+                </div>
+                <div class="col-md-5 monthly_rate" id = "resultDiv1">
+                  0
+                </div>
+              </div>
+            </div>
+            <div class="monthly_emi">
+              <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12 Monthly-EMI">
+                  Payable Amount (INR)
+                </div>
+                <div class="col-md-5 monthly_rate" id = "resultDiv2">
+                  0
+                </div>
+              </div>
+            </div>
+            <div class="monthly_emi">
+              <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12 Monthly-EMI">
+                  Flat Rate (%)
+                </div>
+                <div class="col-md-5 monthly_rate" id= "resultDiv3">
+                  0
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="row">
+          <a href="#" class="get_eligibility" onClick="doCalculate()">check eligibility</a>
+        </div>
+        <div id="schduelDiv" class="cal_detail">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="javascript/bootstrap.min.js"></script>
+  <script src="javascript/pace.min.js" type="text/javascript"></script>
+  <script src="javascript/slick.js" type="text/javascript"></script>
+  <script src="javascript/bootstrap-datepicker.js" type="text/javascript"></script>
+  <script type="text/javascript" src="javascript/swiper.jquery.min.js"></script>
+  <script type="text/javascript" src="javascript/pages.frontend.js"></script>
+  <script type="text/javascript" src="javascript/custom.js"></script>
+
+<!-- Footer -->
+
+
+<script>
+var amount = GetParameterValues('loanAmount');
+var interest = GetParameterValues('interest');
+var tenure = GetParameterValues('tenure');
+
+function GetParameterValues(param) {
+    var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < url.length; i++) {
+        var urlparam = url[i].split('=');
+        if (urlparam[0] == param) {
+            return urlparam[1];
+        }
+    }
+}
+
+if (amount != undefined) {
+  $("#txt1").val(amount);
+  $("#txt2").val(interest);
+  $("#txt3").val(tenure);
+
+  $("#range1").val(amount);
+  $("#range2").val(interest);
+  $("#range3").val(tenure);
+
+  $("#amountDiv1").html(amount);
+  $("#amountDiv2").html(interest);
+  $("#amountDiv3").html(tenure);
+
+}
+</script>
+<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
+      type="text/css" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+$( function() {
+  $( "#datepicker" ).datepicker({minDate: 0}).datepicker("setDate", new Date());
+});
+</script>
+<style>
+#ui-datepicker-div{
+  z-index:100 !important;
+}
+</style>
+  </body>
+
+</html>
