@@ -177,7 +177,7 @@ $(function(){
 });
 
 function doCalculate(){
-  var interestRate = parseFloat($("#amountDiv2").html()) / 100;
+  var interestRate = parseFloat($("#amountDiv2").html());
   var fixedNumberOfPaymentPerYear = 12
   var loanTenureInYear = parseInt($("#amountDiv3").html());
   var loanAmount = parseFloat($("#amountDiv1").html());
@@ -186,6 +186,25 @@ function doCalculate(){
   var m = d.getMonth()+1;
   var y = d.getFullYear();
 
+  var loan_min = $("#range1").attr("min");
+var loan_max = $("#range1").attr("max");
+if(loanAmount < loan_min || loanAmount > loan_max){
+alert("Loan Amount should be between "+loan_min+" to "+loan_max);
+return;
+}
+var interest_min = $("#range2").attr("min");
+var interest_max = $("#range2").attr("max");
+if(interestRate < interest_min || interestRate > interest_max){
+alert("Interest Rate should be between "+interest_min+"% to "+interest_max+"%");
+return;
+}
+var tenure_min = parseInt($("#range3").attr("min"));
+var tenure_max = parseInt($("#range3").attr("max"));
+if(loanTenureInYear < tenure_min || loanTenureInYear > tenure_max){
+alert("Loan Tenure should be between "+tenure_min+" to "+tenure_max+" months");
+return;
+}
+interestRate /= 100;
   //var monthlyEmi = -PMT(interestRate/fixedNumberOfPaymentPerYear,(loanTenureInYear/12)*fixedNumberOfPaymentPerYear,loanAmount);
   var monthlyEmi = pmt(interestRate/fixedNumberOfPaymentPerYear,(loanTenureInYear/12)*fixedNumberOfPaymentPerYear,-loanAmount);
   $("#resultDiv0").html(round(monthlyEmi, 2));
@@ -276,14 +295,13 @@ function computeSchedule(loan_amount, interest_rate, payments_per_year, years, p
     var remaining = loan_amount;
     var number_of_payments = payments_per_year * years;
 
-    for (var i=0; i<=number_of_payments; i++) {
+    for (var i=0; i<number_of_payments; i++) {
         var interest = remaining * (interest_rate/100/payments_per_year);
         var principle = (payment-interest);
         remaining -= principle;
-        var row = [i, principle>0?(principle<payment?principle:payment):0, interest>0?interest:0, remaining>0?remaining:0];
+        var row = [i+1, principle>0?(principle<payment?principle:payment):0, interest>0?interest:0, remaining>0?remaining:0];
         schedule.push(row);
-      //  remaining -= principle
-
+        //remaining -= principle
     }
 
     return schedule;
@@ -517,6 +535,7 @@ if (amount != undefined) {
 </script>
 <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
       type="text/css" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
 $( function() {
