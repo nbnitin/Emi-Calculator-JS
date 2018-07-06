@@ -279,9 +279,11 @@ function computeSchedule(loan_amount, interest_rate, payments_per_year, years, p
     for (var i=0; i<=number_of_payments; i++) {
         var interest = remaining * (interest_rate/100/payments_per_year);
         var principle = (payment-interest);
+        remaining -= principle;
         var row = [i, principle>0?(principle<payment?principle:payment):0, interest>0?interest:0, remaining>0?remaining:0];
         schedule.push(row);
-        remaining -= principle
+      //  remaining -= principle
+
     }
 
     return schedule;
@@ -515,7 +517,6 @@ if (amount != undefined) {
 </script>
 <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
       type="text/css" />
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
 $( function() {
